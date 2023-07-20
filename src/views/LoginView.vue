@@ -34,9 +34,9 @@
 	const professions = ref([])
 	const specialties = ref([])
 
-	let selectedCountry = ref("country")
-	let selectedProfession = ref("profession")
-	let selectedSpecialty = ref("specialty")
+	let selectedCountry = ref(null)
+	let selectedProfession = ref(null)
+	let selectedSpecialty = ref(null)
 
 	axios.get("http://localhost:3000/api/countries").then((response) => {
 		countries.value = response.data
@@ -46,14 +46,13 @@
 		professions.value = response.data
 	})
 
-	function handleChange(event) {
-		console.error(event.target.value)
-		console.error(selectedProfession.value.professionId)
-
+	function handleChange() {
 		axios
-			.get(`http://localhost:3000/api/professions/${selectedProfession.value.professionId}/specialties`)
+			.get(
+				`http://localhost:3000/api/professions/${selectedProfession.value.professionId}/specialties`,
+			)
 			.then((response) => {
-				specialties = response.data
+				specialties.value = response.data
 			})
 	}
 </script>
@@ -142,7 +141,22 @@
 					</option>
 				</select>
 			</div>
-			<div v-if="settings.specialty">specialty</div>
+
+			<div v-if="settings.specialty">
+				<label for="specialty">Specialty</label>
+
+				{{ selectedSpecialty }}
+				<select
+					v-model="selectedSpecialty"
+					name="specialty"
+					id="specialty"
+					:disabled="selectedProfession === null"
+					class="[ w-full px-4 py-2 ]">
+					<option v-for="specialty in specialties">
+						{{ specialty.specialtyName }}
+					</option>
+				</select>
+			</div>
 
 			<pre>values: {{ values }}</pre>
 
