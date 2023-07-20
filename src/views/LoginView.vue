@@ -1,6 +1,7 @@
 <script setup>
 	import { ref, onMounted } from "vue"
 	import { useForm } from "vee-validate"
+	import { toTitleCase } from "@/helpers/string"
 	import axios from "axios"
 	import * as yup from "yup"
 	import FormInput from "@components/FormInput.vue"
@@ -8,6 +9,12 @@
 	import config from "@/config.json"
 
 	const { handleSubmit, values, errors, defineInputBinds } = useForm({
+		initialValues: {
+			firstName: "Jillian",
+			lastName: "Lim",
+			email: "test@example.com",
+			password: "p@$$w0rd",
+		},
 		validationSchema: yup.object({
 			firstName: yup.string().required("Your first name is required."),
 			lastName: yup.string().required("Your last name is required."),
@@ -30,7 +37,6 @@
 	const onSubmit = handleSubmit((values) => {
 		isOpen.value = true
 
-		console.log(isOpen.value)
 		completedData.firstName = values.firstName
 		completedData.lastName = values.lastName
 		completedData.email = values.email
@@ -178,7 +184,7 @@
 					<option
 						v-for="country in countries"
 						:value="country">
-						{{ country.isoCountry }}
+						{{ toTitleCase(country.isoCountry) }}
 					</option>
 				</select>
 			</div>
@@ -211,9 +217,9 @@
 				class="[ col-span-2 ]">
 				<label
 					for="specialty"
-					class="[ form-label ]"
-					>Specialty</label
-				>
+					class="[ form-label ]">
+					Specialty
+				</label>
 
 				<select
 					v-model="selectedSpecialty"
@@ -232,8 +238,8 @@
 
 			<button
 				type="submit"
-				class="[ bg-[#F16639] text-white sm:text-sm ] [ mt-4 px-3 py-2 rounded ] [ col-span-2 ]">
-				Login
+				class="[ bg-accent text-white sm:text-sm ] [ mt-4 px-3 py-2 rounded ] [ col-span-2 ]">
+				Register
 			</button>
 		</form>
 	</main>

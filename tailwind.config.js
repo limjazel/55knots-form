@@ -5,7 +5,11 @@ export default {
     "./src/**/*"
 ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        accent: '#F16639'
+      }
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),
