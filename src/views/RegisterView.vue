@@ -2,7 +2,9 @@
 	import { ref, onMounted } from "vue"
 	import { useForm } from "vee-validate"
 	import { toTitleCase } from "@/helpers/string"
+	// for fetching APIs
 	import axios from "axios"
+	// for the form validations
 	import * as yup from "yup"
 	import config from "@/config.json"
 	import FormInput from "@components/FormInput.vue"
