@@ -7,6 +7,12 @@
 	import axios from "axios"
 
 	const { handleSubmit, values, errors, defineInputBinds } = useForm({
+		initialValues: {
+			firstName: "Jillian",
+			lastName: "Lim",
+			email: "test@example.com",
+			password: "p@$$w0rd",
+		},
 		validationSchema: yup.object({
 			firstName: yup.string().required("Your first name is required."),
 			lastName: yup.string().required("Your last name is required."),
@@ -24,11 +30,11 @@
 	const password = defineInputBinds("password")
 
 	const onSubmit = handleSubmit((values) => {
-		alert(JSON.stringify(values, null, 2))
+		// alert(JSON.stringify(values, null, 2))
+		alert(selectedSpecialty.value.specialtyName)
 	})
 
 	const settings = ref(config)
-	console.error(settings.value)
 
 	const countries = ref([])
 	const professions = ref([])
@@ -47,9 +53,11 @@
 	})
 
 	function handleChange() {
+		selectedSpecialty.value = null
+
 		axios
 			.get(
-				`http://localhost:3000/api/professions/${selectedProfession.value.professionId}/specialties`,
+				`http://localhost:3000/api/specialties?profession=${selectedProfession.value.professionId}`,
 			)
 			.then((response) => {
 				specialties.value = response.data
@@ -152,7 +160,9 @@
 					id="specialty"
 					:disabled="selectedProfession === null"
 					class="[ w-full px-4 py-2 ]">
-					<option v-for="specialty in specialties">
+					<option
+						v-for="specialty in specialties"
+						:value="specialty">
 						{{ specialty.specialtyName }}
 					</option>
 				</select>

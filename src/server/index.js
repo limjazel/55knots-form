@@ -1,14 +1,19 @@
 import express from "express";
 import cors from 'cors'
 import axios from 'axios'
+import bodyParser from 'body-parser'
+import url from 'url'
+import querystring from 'querystring'
 
 const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(cors())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 app.get("/api/v1/hello", (_req, res) => {
-  res.json({ message: "Hello, world!" });
+  res.json({ message: "Hello, world!" })
 });
 
 app.listen(port, () => {
@@ -31,8 +36,14 @@ app.get("/api/professions", async (_req, res) => {
   return res.json(professions)
 })
 
-app.get("/api/professions/:profession/specialties", async (req, res) => {
-  let specialties = await axios.get(`https://test-services.interact.technology/rest/refdata/specialties?professionId=${req.params.profession}`)
+app.get("/api/specialties", async (req, res) => {
+  let url = `https://test-services.interact.technology/rest/refdata/specialties`
+
+  if (req.query.profession) {
+    url = `${url}?professionId=${req.query.profession}`
+  }
+
+  let specialties = await axios.get(url)
   .then((response) => {
     return response.data
   })
