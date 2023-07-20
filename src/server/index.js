@@ -22,3 +22,11 @@ app.get("/api/countries", async (_req, res) => {
   })
   return res.json(countries)
 })
+
+app.get("/api/professions", async (_req, res) => {
+  let professions = await axios.get("https://test-services.interact.technology/rest/refdata/professions")
+  .then((response) => {
+    return response.data
+  })
+  return res.json(professions)
+})

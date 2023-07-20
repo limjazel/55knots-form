@@ -31,9 +31,17 @@
 	console.error(settings.value)
 
 	const countries = ref([])
+	const professions = ref([])
+
+	let selectedCountry = ref("country")
+	let selectedProfession = ref("profession")
 
 	axios.get("http://localhost:3000/api/countries").then((response) => {
 		countries.value = response.data
+	})
+
+	axios.get("http://localhost:3000/api/professions").then((response) => {
+		professions.value = response.data
 	})
 </script>
 
@@ -89,19 +97,37 @@
 
 			<div v-if="settings.country">
 				<label for="country">Country</label>
+
+				{{ selectedCountry }}
 				<select
+					v-model="selectedCountry"
 					name="country"
 					id="country"
 					class="[ w-full px-4 py-2 ]">
 					<option
 						v-for="country in countries"
-						:value="country.isoCode">
+						:value="country">
 						{{ country.isoCountry }}
 					</option>
 				</select>
 			</div>
 
-			<div v-if="settings.profession">profession</div>
+			<div v-if="settings.profession">
+				<label for="profession">Profession</label>
+
+				{{ selectedProfession }}
+				<select
+					v-model="selectedProfession"
+					name="profession"
+					id="profession"
+					class="[ w-full px-4 py-2 ]">
+					<option
+						v-for="profession in professions"
+						:value="profession">
+						{{ profession.professionName }}
+					</option>
+				</select>
+			</div>
 			<div v-if="settings.specialty">specialty</div>
 
 			<pre>values: {{ values }}</pre>
