@@ -33,6 +33,7 @@ const onSubmit = handleSubmit((values) => {
           type="text"
           placeholder="John"
           autocomplete="off"
+          :error="errors.firstName"
         />
 
         <span>{{ errors.firstName }}</span>
@@ -46,6 +47,7 @@ const onSubmit = handleSubmit((values) => {
           type="text"
           placeholder="Doe"
           autocomplete="off"
+          :error="errors.lastName"
         />
 
         <span>{{ errors.lastName }}</span>
@@ -59,6 +61,7 @@ const onSubmit = handleSubmit((values) => {
           type="text"
           placeholder="johndoe@gmail.com"
           autocomplete="off"
+          :error="errors.email"
         />
 
         <span>{{ errors.email }}</span>
@@ -71,6 +74,7 @@ const onSubmit = handleSubmit((values) => {
           id="password"
           type="password"
           placeholder="*********"
+          :error="errors.password"
         />
 
         <span>{{ errors.password }}</span>

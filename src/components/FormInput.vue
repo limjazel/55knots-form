@@ -1,19 +1,20 @@
 <script setup>
 const $emit = defineEmits(["update:modelValue", "blur"])
 
-defineProps({
+const props = defineProps({
   modelValue: String,
-  error: false || Boolean,
+  error: String,
 })
+
+console.error(props)
 </script>
 
 <template>
   <input
     v-bind="$attrs"
-    :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)"
     @blur="$emit('blur')"
-    :class="{ ['input-error']: error }"
+    :class="{ ['input-error']: error !== undefined }"
     class="c-form-input [ border rounded px-3 py-2 ]"
   />
 </template>
