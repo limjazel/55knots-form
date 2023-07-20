@@ -10,7 +10,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="flex flex-col">
+  <div class="[ flex flex-col ]">
     <input
       v-bind="$attrs"
       @input="$emit('update:modelValue', $event.target.value)"

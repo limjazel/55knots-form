@@ -1,7 +1,10 @@
 <script setup>
-	import FormInput from "../components/FormInput.vue";
-	import { useForm } from "vee-validate";
-	import * as yup from "yup";
+	import { ref } from "vue"
+	import FormInput from "../components/FormInput.vue"
+	import { useForm } from "vee-validate"
+	import * as yup from "yup"
+	import config from "../config.json"
+	import axios from "axios"
 
 	const { handleSubmit, values, errors, defineInputBinds } = useForm({
 		validationSchema: yup.object({
@@ -13,23 +16,34 @@
 				.required("An email address is required."),
 			password: yup.string().min(8).required("A password is required."),
 		}),
-	});
+	})
 
-	const firstName = defineInputBinds("firstName");
-	const lastName = defineInputBinds("lastName");
-	const email = defineInputBinds("email");
-	const password = defineInputBinds("password");
+	const firstName = defineInputBinds("firstName")
+	const lastName = defineInputBinds("lastName")
+	const email = defineInputBinds("email")
+	const password = defineInputBinds("password")
 
 	const onSubmit = handleSubmit((values) => {
-		alert(JSON.stringify(values, null, 2));
-	});
+		alert(JSON.stringify(values, null, 2))
+	})
+
+	const settings = ref(config)
+	console.error(settings.value)
+
+	const countries = ref([])
+
+	axios.get("http://localhost:3000/api/countries").then((response) => {
+		countries.value = response.data
+	})
 </script>
 
 <template>
 	<main>
+		{{ config }}
+
 		<form
 			@submit.prevent="onSubmit"
-			class="[ grid grid-cols-2 gap-4 ] [ max-w-md bg-yellow-100 ] [ px-6 py-8 mx-auto ]">
+			class="registration-form [ grid grid-cols-2 gap-4 ]">
 			<div>
 				<label for="first-name">First name</label>
 				<FormInput
@@ -73,6 +87,23 @@
 					:error="errors.password" />
 			</div>
 
+			<div v-if="settings.country">
+				<label for="country">Country</label>
+				<select
+					name="country"
+					id="country"
+					class="[ w-full px-4 py-2 ]">
+					<option
+						v-for="country in countries"
+						:value="country.isoCode">
+						{{ country.isoCountry }}
+					</option>
+				</select>
+			</div>
+
+			<div v-if="settings.profession">profession</div>
+			<div v-if="settings.specialty">specialty</div>
+
 			<pre>values: {{ values }}</pre>
 
 			<button
@@ -84,4 +115,8 @@
 	</main>
 </template>
 
-<style lang="postcss"></style>
+<style lang="postcss">
+	.registration-form {
+		@apply max-w-md bg-yellow-100 px-6 py-8 mx-auto;
+	}
+</style>

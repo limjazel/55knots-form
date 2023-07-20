@@ -15,9 +15,10 @@ app.listen(port, () => {
   console.log("Server listening on port", port);
 });
 
-app.get("/api/countries", (_req, res) => {
-  axios.get("https://test-services.interact.technology/rest/refdata/countries")
+app.get("/api/countries", async (_req, res) => {
+  let countries = await axios.get("https://test-services.interact.technology/rest/refdata/countries")
   .then((response) => {
-    res.json(response.data)
+    return response.data
   })
+  return res.json(countries)
 })
