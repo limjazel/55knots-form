@@ -1,5 +1,5 @@
 <script setup>
-	import { ref } from "vue"
+	import { ref, onMounted } from "vue"
 	import FormInput from "../components/FormInput.vue"
 	import { useForm } from "vee-validate"
 	import * as yup from "yup"
@@ -30,7 +30,6 @@
 	const password = defineInputBinds("password")
 
 	const onSubmit = handleSubmit((values) => {
-		// alert(JSON.stringify(values, null, 2))
 		isOpen.value = true
 	})
 
@@ -44,16 +43,26 @@
 	let selectedProfession = ref(null)
 	let selectedSpecialty = ref(null)
 
-	axios.get("http://localhost:3000/api/countries").then((response) => {
-		countries.value = response.data
-	})
+	onMounted(() => {
+		if (config.country) {
+			axios.get("http://localhost:3000/api/countries").then((response) => {
+				countries.value = response.data
+			})
+		}
 
-	axios.get("http://localhost:3000/api/professions").then((response) => {
-		professions.value = response.data
+		if (config.profession) {
+			axios.get("http://localhost:3000/api/professions").then((response) => {
+				professions.value = response.data
+			})
+		}
 	})
 
 	function handleChange() {
 		selectedSpecialty.value = null
+
+		if (!config.specialty) {
+			return
+		}
 
 		axios
 			.get(
@@ -97,7 +106,7 @@
 
 				<div>
 					<dt>Password</dt>
-					<dd>{{ values.password.replaceAll(/./g,"*") }}</dd>
+					<dd>{{ values.password.replaceAll(/./g, "*") }}</dd>
 				</div>
 
 				<div v-if="selectedCountry !== null">
@@ -166,7 +175,6 @@
 			<div v-if="settings.country">
 				<label for="country">Country</label>
 
-				{{ selectedCountry }}
 				<select
 					v-model="selectedCountry"
 					name="country"
@@ -183,7 +191,6 @@
 			<div v-if="settings.profession">
 				<label for="profession">Profession</label>
 
-				{{ selectedProfession }}
 				<select
 					v-model="selectedProfession"
 					name="profession"
@@ -201,12 +208,11 @@
 			<div v-if="settings.specialty">
 				<label for="specialty">Specialty</label>
 
-				{{ selectedSpecialty }}
 				<select
 					v-model="selectedSpecialty"
 					name="specialty"
 					id="specialty"
-					:disabled="selectedProfession === null"
+					:disabled="specialties.length === 0"
 					class="[ w-full px-4 py-2 ]">
 					<option
 						v-for="specialty in specialties"
@@ -216,7 +222,6 @@
 				</select>
 			</div>
 
-			<pre>values: {{ values }}</pre>
 
 			<button
 				type="submit"
