@@ -7,6 +7,10 @@ const props = defineProps({
   modelValue: String,
   error: String,
 })
+
+defineOptions({
+  inheritAttrs: false
+})
 </script>
 
 <template>

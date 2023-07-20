@@ -1,10 +1,10 @@
 <script setup>
 	import { ref, onMounted } from "vue"
-	import FormInput from "../components/FormInput.vue"
 	import { useForm } from "vee-validate"
-	import * as yup from "yup"
-	import config from "../config.json"
 	import axios from "axios"
+	import * as yup from "yup"
+	import FormInput from "../components/FormInput.vue"
+	import config from "../config.json"
 
 	const { handleSubmit, values, errors, defineInputBinds } = useForm({
 		initialValues: {
@@ -78,6 +78,7 @@
 
 <template>
 	<main>
+		<h1>Account Registration</h1>
 		<div
 			class="bg-red-100 flex flex-col"
 			v-if="isOpen">
@@ -152,7 +153,7 @@
 			</div>
 
 			<div>
-				<label for="last-name">Email</label>
+				<label for="email">Email</label>
 				<FormInput
 					v-bind="email"
 					id="email"
@@ -222,10 +223,9 @@
 				</select>
 			</div>
 
-
 			<button
 				type="submit"
-				class="block bg-slate-500 py-2 px-4 border">
+				class="block bg-slate-200 py-2 px-4 border">
 				Login
 			</button>
 		</form>
