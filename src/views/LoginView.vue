@@ -65,13 +65,13 @@ const onSubmit = handleSubmit((values) => {
       </div>
 
       <div>
-        <label for="last-name">Password</label>
+        <label for="password">Password</label>
         <FormInput
           v-bind="password"
           id="password"
           type="password"
           placeholder="*********"
-          autocomplete="off"
+          error
         />
 
         <span>{{ errors.password }}</span>

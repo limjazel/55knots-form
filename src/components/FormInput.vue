@@ -2,12 +2,7 @@
 const $emit = defineEmits(["update:modelValue", "blur"])
 
 const props = defineProps({
-  id: String,
-  type: String,
-  autocomplete: String,
-  placeholder: String,
-  modelValue: String,
-  error: Boolean,
+  error: false || Boolean,
 })
 
 console.log(props)
@@ -19,13 +14,13 @@ console.log(props)
     :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)"
     @blur="$emit('blur')"
-    :class="{ 'red': props.error }"
+    :class="{ ['input-error']: props.error }"
     class="c-form-input [ border rounded px-3 py-2 ]"
   />
 </template>
 
 <style>
-.red {
+.input-error {
   background-color: red;
 }
 </style>
