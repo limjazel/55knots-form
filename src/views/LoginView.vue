@@ -164,16 +164,36 @@
 			<ErrorToast
 				v-if="apiErrors.countries"
 				@retry="fetchCountries">
-				countries error
+				<div class="[ grid gap-1 ]">
+					<span class="[ font-medium ]">Unable to fetch countries</span>
+					<span class="[ text-slate-700 ]">
+						Unable to fetch the countries at the moment. We are attempting to
+						fetch the data again. Please wait a moment.
+					</span>
+				</div>
 			</ErrorToast>
 
 			<ErrorToast
 				v-if="apiErrors.professions"
 				@retry="fetchProfessions">
-				professions error
+				<div class="[ grid gap-1 ]">
+					<span class="[ font-medium ]">Unable to fetch professions</span>
+					<span class="[ text-slate-700 ]">
+						Unable to fetch the professions at the moment. We are attempting to
+						fetch the data again. Please wait a moment.
+					</span>
+				</div>
 			</ErrorToast>
 
-			<ErrorToast @retry="fetchSpecialties"> specialties error </ErrorToast>
+			<ErrorToast v-if="apiErrors.specialties" @retry="fetchSpecialties">
+				<div class="[ grid gap-1 ]">
+					<span class="[ font-medium ]">Unable to fetch specialties</span>
+					<span class="[ text-slate-700 ]">
+						Unable to fetch the specialties at the moment. We are attempting to
+						fetch the data again. Please wait a moment.
+					</span>
+				</div>
+			</ErrorToast>
 		</div>
 
 		<form
