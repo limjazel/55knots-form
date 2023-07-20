@@ -97,7 +97,7 @@
 
 				<div>
 					<dt>Password</dt>
-					<dd>{{ values.password }}</dd>
+					<dd>{{ values.password.replaceAll(/./g,"*") }}</dd>
 				</div>
 
 				<div v-if="selectedCountry !== null">
