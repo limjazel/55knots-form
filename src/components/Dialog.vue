@@ -18,7 +18,7 @@
 	<div
 		v-if="isOpen"
 		@click.self="$emit('close')"
-		class="c-dialog [ scrolling--stop ] [ flex items-center justify-center ]">
+		class="c-dialog [ scrolling--stop ] [ flex sm:items-center justify-center ]">
 		<div class="c-dialog-body [ flex flex-col ]">
 			<button
 				type="button"
@@ -69,7 +69,8 @@
 				</div>
 			</dl>
 
-			<a href="/home"
+			<a
+				href="/home"
 				class="[ bg-accent text-white sm:text-sm text-center ] [ mt-8 px-3 py-2 rounded ]">
 				Go to home page
 			</a>
@@ -79,10 +80,11 @@
 
 <style lang="postcss" scoped>
 	.c-dialog {
-		@apply fixed inset-0 h-screen w-full bg-orange-100/50 backdrop-blur-sm z-50;
+		@apply fixed inset-0 min-h-screen h-full w-full pt-20 pb-10 bg-orange-100/50 backdrop-blur-sm z-50
+					overflow-y-auto;
 	}
 	.c-dialog-body {
-		@apply mx-6 px-10 py-12 bg-white rounded-lg shadow-lg w-full md:max-w-[32rem];
+		@apply mx-6 px-10 py-12 bg-white rounded-lg shadow-lg w-full md:max-w-[32rem] overflow-y-auto;
 	}
 	dt {
 		@apply block text-sm font-medium mb-2 text-orange-700;
