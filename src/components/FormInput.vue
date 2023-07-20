@@ -7,6 +7,7 @@ const props = defineProps({
   autocomplete: String,
   placeholder: String,
   modelValue: String,
+  error: Boolean,
 })
 
 console.log(props)
@@ -14,13 +15,17 @@ console.log(props)
 
 <template>
   <input
-    :id="props.id"
-    :type="props.type"
+    v-bind="$attrs"
     :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)"
     @blur="$emit('blur')"
-    :autocomplete="props.autocomplete"
-    :placeholder="props.placeholder"
+    :class="{ 'red': props.error }"
     class="c-form-input [ border rounded px-3 py-2 ]"
   />
 </template>
+
+<style>
+.red {
+  background-color: red;
+}
+</style>
