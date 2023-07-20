@@ -6,6 +6,7 @@
 	import axios from "axios"
 	// for the form validations
 	import * as yup from "yup"
+	// the JSON config for the optional fields (country, profession, specialty)
 	import config from "@/config.json"
 	import FormInput from "@components/FormInput.vue"
 	import Dialog from "@components/Dialog.vue"
@@ -149,7 +150,7 @@
 </script>
 
 <template>
-	<main class="[ min-h-screen p-6 ] [ flex ]">
+	<main class="[ min-h-screen p-6 container mx-auto ] [ flex ]">
 		<Dialog
 			:completedData="completedData"
 			:isOpen="isOpen"
@@ -402,7 +403,7 @@
 <style lang="postcss" scope>
 	.registration-banner {
 		@apply rounded-lg bg-accent/20 bg-cover bg-center;
-		background-image: url("/public/glasses.jpeg");
+		background-image: url("/glasses.jpeg");
 	}
 	.title {
 		@apply text-2xl font-semibold;
