@@ -10,13 +10,7 @@
 	import Spinner from "@components/Spinner.vue"
 	import ErrorToast from "@components/ErrorToast.vue"
 
-	const { handleSubmit, values, errors, defineInputBinds } = useForm({
-		initialValues: {
-			firstName: "Jillian",
-			lastName: "Lim",
-			email: "test@example.com",
-			password: "p@$$w0rd",
-		},
+	const { handleSubmit, errors, defineInputBinds } = useForm({
 		validationSchema: yup.object({
 			firstName: yup.string().required("Your first name is required."),
 			lastName: yup.string().required("Your last name is required."),
@@ -81,6 +75,8 @@
 		completedData.country = selectedCountry.value?.isoCountry
 		completedData.profession = selectedProfession.value?.professionName
 		completedData.specialty = selectedSpecialty.value?.specialtyName
+
+		localStorage.setItem("completedData", JSON.stringify(completedData))
 
 		setTimeout(() => {
 			isOpen.value = true
@@ -185,7 +181,9 @@
 				</div>
 			</ErrorToast>
 
-			<ErrorToast v-if="apiErrors.specialties" @retry="fetchSpecialties">
+			<ErrorToast
+				v-if="apiErrors.specialties"
+				@retry="fetchSpecialties">
 				<div class="[ grid gap-1 ]">
 					<span class="[ font-medium ]">Unable to fetch specialties</span>
 					<span class="[ text-slate-700 ]">
