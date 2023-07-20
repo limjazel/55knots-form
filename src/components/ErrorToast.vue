@@ -12,7 +12,7 @@
 </script>
 
 <template>
-	<div class="[ bg-white rounded shadow-lg ring-1 ring-black/5 px-6 py-4 ] [ text-sm ] [ flex gap-4 ] [ max-w-[22rem] md:max-w-[26rem] ]">
+	<div class="[ bg-white rounded shadow-lg ring-1 ring-black/5 px-6 py-4 z-30 ] [ text-sm ] [ flex gap-4 ] [ max-w-[22rem] md:max-w-[26rem] ]">
 		<WarningIcon class="[ text-yellow-500 shrink-0 mt-1 ]" />
 		<slot />
 	</div>

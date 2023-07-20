@@ -149,10 +149,7 @@
 </script>
 
 <template>
-	<main
-		class="[ min-h-screen py-20 px-6 ] [ flex flex-col items-center justify-center ]">
-		<h1 class="page-title">Account Registration</h1>
-
+	<main class="[ min-h-screen p-6 ] [ flex ]">
 		<Dialog
 			:completedData="completedData"
 			:isOpen="isOpen"
@@ -196,182 +193,225 @@
 			</ErrorToast>
 		</div>
 
-		<form
-			@submit.prevent="onSubmit"
-			class="registration-form [ grid grid-cols-2 gap-5 ]">
-			<div class="[ col-span-2 md:col-span-1 ]">
-				<label
-					for="first-name"
-					class="[ form-label ]"
-					>First name</label
-				>
-				<FormInput
-					v-bind="firstName"
-					id="first-name"
-					type="text"
-					placeholder="John"
-					autocomplete="off"
-					:error="errors.firstName" />
-			</div>
-
-			<div class="[ col-span-2 md:col-span-1 ]">
-				<label
-					for="last-name"
-					class="[ form-label ]"
-					>Last name</label
-				>
-				<FormInput
-					v-bind="lastName"
-					id="last-name"
-					type="text"
-					placeholder="Doe"
-					autocomplete="off"
-					:error="errors.lastName" />
-			</div>
-
-			<div class="[ col-span-2 ]">
-				<label
-					for="email"
-					class="[ form-label ]">
-					Email
-				</label>
-				<FormInput
-					v-bind="email"
-					id="email"
-					type="text"
-					placeholder="johndoe@gmail.com"
-					autocomplete="off"
-					:error="errors.email" />
-			</div>
-
-			<div class="[ col-span-2 ]">
-				<label
-					for="password"
-					class="[ form-label ]"
-					>Password</label
-				>
-				<FormInput
-					v-bind="password"
-					id="password"
-					type="password"
-					placeholder="*********"
-					:error="errors.password" />
-			</div>
-
+		<div class="[ flex flex-wrap md:flex-nowrap gap-10 ] [ w-full ]">
 			<div
-				v-if="settings.country"
-				class="[ col-span-2 ]">
-				<label
-					for="country"
-					class="[ form-label ]">
-					Country
-				</label>
+				class="registration-banner relative [ grid p-6 content-end ] [ w-full lg:w-2/5 min-h-[14rem] ]">
+				<div class="[ absolute inset-0 bg-accent/50 rounded-lg ]"></div>
 
-				<select
-					v-model="selectedCountry"
-					name="country"
-					id="country"
-					:class="{ 'text-slate-400': selectedCountry === null }"
-					class="[ form-select ]">
-					<option :value="null">Select country</option>
+				<div class="[ z-10 p-2 ]">
+					<div class="grid">
+						<span
+							class="[ text-2xl text-white font-semibold ] [ leading-7 ] [ max-w-[20rem] ]">
+							Join the myINTERACT
+						</span>
 
-					<option
-						v-for="country in countries"
-						:value="country">
-						{{ toTitleCase(country.isoCountry) }}
-					</option>
-				</select>
-			</div>
-
-			<div
-				v-if="settings.profession"
-				class="[ col-span-2 ]">
-				<label
-					for="profession"
-					class="[ form-label ]">
-					Profession
-				</label>
-
-				<select
-					v-model="selectedProfession"
-					name="profession"
-					id="profession"
-					@change="handleChange"
-					:class="{ 'text-slate-400': selectedProfession === null }"
-					class="[ form-select ]">
-					<option :value="null">Select profession</option>
-
-					<option
-						v-for="profession in professions"
-						:value="profession">
-						{{ profession.professionName }}
-					</option>
-				</select>
-			</div>
-
-			<div
-				v-if="settings.specialty"
-				class="[ col-span-2 ]">
-				<label
-					for="specialty"
-					class="[ form-label ]">
-					Specialty
-				</label>
-
-				<div class="[ relative ]">
-					<div
-						v-if="isFetchingSpecialties"
-						class="[ absolute left-2 top-1/2 -translate-y-1/2 z-10 ]">
-						<Spinner class="h-4 w-4 text-orange-700" />
+						<span
+							class="[ text-2xl text-white font-semibold ] [ leading-7 ] ]">
+							ophthalmology patient community
+						</span>
 					</div>
-					<select
-						v-model="selectedSpecialty"
-						name="specialty"
-						id="specialty"
-						:disabled="specialties.length === 0"
-						:class="{
-							'form-select--disabled': specialties.length === 0,
-							'text-slate-400': selectedSpecialty === null,
-						}"
-						class="[ form-select ]">
-						<option :value="null">Select specialty</option>
 
-						<option
-							v-for="specialty in specialties"
-							:value="specialty">
-							{{ specialty.specialtyName }}
-						</option>
-					</select>
+					<p class="[ text-white/80 mt-2 leading-tight ] [ max-w-[24rem] md:max-w-sm ]">
+						Discover healthcare organizations, securely engage, and interact with
+						health-related contents.
+					</p>
 				</div>
 			</div>
 
-			<button
-				type="submit"
-				:disabled="
-					apiErrors.countries || apiErrors.professions || apiErrors.specialties
-				"
-				:class="{
-					'opacity-70':
-						apiErrors.countries ||
-						apiErrors.professions ||
-						apiErrors.specialties,
-				}"
-				class="submit-button [ col-span-2 ] [ flex justify-center items-center gap-2 ]">
-				<Spinner
-					v-if="isProcessing"
-					class="h-4 w-4 text-white" />
-				<span>Register</span>
-			</button>
-		</form>
+			<div
+				class="[ flex flex-col items-center justify-center ] [ w-full lg:w-3/5 py-10 ]">
+				<div class="form-header [ grid ]">
+					<h1 class="title">Register</h1>
+					<p class="[ mt-1 text-slate-600 ]">Create your account</p>
+				</div>
+
+				<form
+					@submit.prevent="onSubmit"
+					class="registration-form [ grid grid-cols-2 gap-5 ]">
+					<div class="[ col-span-2 md:col-span-1 ]">
+						<label
+							for="first-name"
+							class="[ form-label ]"
+							>First name</label
+						>
+						<FormInput
+							v-bind="firstName"
+							id="first-name"
+							type="text"
+							placeholder="John"
+							autocomplete="off"
+							:error="errors.firstName" />
+					</div>
+
+					<div class="[ col-span-2 md:col-span-1 ]">
+						<label
+							for="last-name"
+							class="[ form-label ]"
+							>Last name</label
+						>
+						<FormInput
+							v-bind="lastName"
+							id="last-name"
+							type="text"
+							placeholder="Doe"
+							autocomplete="off"
+							:error="errors.lastName" />
+					</div>
+
+					<div class="[ col-span-2 ]">
+						<label
+							for="email"
+							class="[ form-label ]">
+							Email
+						</label>
+						<FormInput
+							v-bind="email"
+							id="email"
+							type="text"
+							placeholder="johndoe@gmail.com"
+							autocomplete="off"
+							:error="errors.email" />
+					</div>
+
+					<div class="[ col-span-2 ]">
+						<label
+							for="password"
+							class="[ form-label ]"
+							>Password</label
+						>
+						<FormInput
+							v-bind="password"
+							id="password"
+							type="password"
+							placeholder="*********"
+							:error="errors.password" />
+					</div>
+
+					<div
+						v-if="settings.country"
+						class="[ col-span-2 ]">
+						<label
+							for="country"
+							class="[ form-label ]">
+							Country
+						</label>
+
+						<select
+							v-model="selectedCountry"
+							name="country"
+							id="country"
+							:class="{ 'text-slate-400': selectedCountry === null }"
+							class="[ form-select ]">
+							<option :value="null">Select country</option>
+
+							<option
+								v-for="country in countries"
+								:value="country">
+								{{ toTitleCase(country.isoCountry) }}
+							</option>
+						</select>
+					</div>
+
+					<div
+						v-if="settings.profession"
+						class="[ col-span-2 ]">
+						<label
+							for="profession"
+							class="[ form-label ]">
+							Profession
+						</label>
+
+						<select
+							v-model="selectedProfession"
+							name="profession"
+							id="profession"
+							@change="handleChange"
+							:class="{ 'text-slate-400': selectedProfession === null }"
+							class="[ form-select ]">
+							<option :value="null">Select profession</option>
+
+							<option
+								v-for="profession in professions"
+								:value="profession">
+								{{ profession.professionName }}
+							</option>
+						</select>
+					</div>
+
+					<div
+						v-if="settings.specialty"
+						class="[ col-span-2 ]">
+						<label
+							for="specialty"
+							class="[ form-label ]">
+							Specialty
+						</label>
+
+						<div class="[ relative ]">
+							<div
+								v-if="isFetchingSpecialties"
+								class="[ absolute left-2 top-1/2 -translate-y-1/2 z-10 ]">
+								<Spinner class="h-4 w-4 text-orange-700" />
+							</div>
+							<select
+								v-model="selectedSpecialty"
+								name="specialty"
+								id="specialty"
+								:disabled="specialties.length === 0"
+								:class="{
+									'form-select--disabled': specialties.length === 0,
+									'text-slate-400': selectedSpecialty === null,
+								}"
+								class="[ form-select ]">
+								<option :value="null">Select specialty</option>
+
+								<option
+									v-for="specialty in specialties"
+									:value="specialty">
+									{{ specialty.specialtyName }}
+								</option>
+							</select>
+						</div>
+					</div>
+
+					<button
+						type="submit"
+						:disabled="
+							apiErrors.countries ||
+							apiErrors.professions ||
+							apiErrors.specialties
+						"
+						:class="{
+							'opacity-70':
+								apiErrors.countries ||
+								apiErrors.professions ||
+								apiErrors.specialties,
+						}"
+						class="submit-button [ col-span-2 ] [ flex justify-center items-center gap-2 ]">
+						<Spinner
+							v-if="isProcessing"
+							class="h-4 w-4 text-white" />
+						<span>Register</span>
+					</button>
+				</form>
+			</div>
+		</div>
 	</main>
 </template>
 
-<style lang="postcss">
-	.page-title {
+<style lang="postcss" scope>
+	.registration-banner {
+		@apply rounded-lg bg-accent/20 bg-cover bg-center;
+		background-image: url("/public/glasses.jpeg");
+	}
+	.title {
 		@apply text-2xl font-semibold;
 	}
+	.form-header {
+		@apply max-w-md px-6 md:px-2 w-full;
+	}
 	.registration-form {
-		@apply max-w-md px-6 py-8 mt-8;
+		@apply max-w-md px-6 md:px-0 py-8 mt-6 w-full;
 	}
 	.form-label {
 		@apply block text-sm font-medium mb-2;
