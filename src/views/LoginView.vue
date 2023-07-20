@@ -7,7 +7,10 @@ const { handleSubmit, values, errors, defineInputBinds } = useForm({
   validationSchema: yup.object({
     firstName: yup.string().required("Your first name is required."),
     lastName: yup.string().required("Your last name is required."),
-    email: yup.string().email("The email address you provided is not valid.").required("An email address is required."),
+    email: yup
+      .string()
+      .email("The email address you provided is not valid.")
+      .required("An email address is required."),
     password: yup.string().min(8).required("A password is required."),
   }),
 })
@@ -24,7 +27,10 @@ const onSubmit = handleSubmit((values) => {
 
 <template>
   <main>
-    <form @submit.prevent="onSubmit" class="grid grid-cols-2 max-w-md bg-yellow-100">
+    <form
+      @submit.prevent="onSubmit"
+      class="[ grid grid-cols-2 gap-4 ] [ max-w-md bg-yellow-100 ] [ px-6 py-8 mx-auto ]"
+    >
       <div>
         <label for="first-name">First name</label>
         <FormInput
@@ -79,5 +85,4 @@ const onSubmit = handleSubmit((values) => {
   </main>
 </template>
 
-<style lang="postcss">
-</style>
+<style lang="postcss"></style>
