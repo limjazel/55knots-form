@@ -156,7 +156,7 @@
 			:isOpen="isOpen"
 			@close="closeDialog" />
 
-		<div class="[ grid gap-4 ] [ absolute right-4 bottom-4 ]">
+		<div class="[ grid gap-4 ] [ fixed right-4 bottom-4 z-10 ]">
 			<ErrorToast
 				v-if="apiErrors.countries"
 				@retry="fetchCountries">
@@ -199,22 +199,23 @@
 				class="registration-banner relative [ grid p-6 content-end ] [ w-full lg:w-2/5 min-h-[14rem] ]">
 				<div class="[ absolute inset-0 bg-accent/50 rounded-lg ]"></div>
 
-				<div class="[ z-10 p-2 ]">
+				<div class="[ z-10 md:p-2 ]">
 					<div class="grid">
 						<span
-							class="[ text-2xl text-white font-semibold ] [ leading-7 ] [ max-w-[20rem] ]">
+							class="[ text-xl md:text-2xl text-white font-semibold ] [ leading-tight md:leading-7 ] [ max-w-[20rem] ]">
 							Join the myINTERACT
 						</span>
 
 						<span
-							class="[ text-2xl text-white font-semibold ] [ leading-7 ] ]">
+							class="[ text-xl md:text-2xl text-white font-semibold ] [ leading-tight md:leading-7 ]">
 							ophthalmology patient community
 						</span>
 					</div>
 
-					<p class="[ text-white/80 mt-2 leading-tight ] [ max-w-[24rem] md:max-w-sm ]">
-						Discover healthcare organizations, securely engage, and interact with
-						health-related contents.
+					<p
+						class="[ text-white/80 mt-2 leading-tight text-sm md:text-base ] [ max-w-[24rem] md:max-w-sm ]">
+						Discover healthcare organizations, securely engage, and interact
+						with health-related contents.
 					</p>
 				</div>
 			</div>
@@ -222,7 +223,7 @@
 			<div
 				class="[ flex flex-col items-center justify-center ] [ w-full lg:w-3/5 py-10 ]">
 				<div class="form-header [ grid ]">
-					<h1 class="title">Register</h1>
+					<h1 class="title">Sign up</h1>
 					<p class="[ mt-1 text-slate-600 ]">Create your account</p>
 				</div>
 
@@ -392,7 +393,7 @@
 						<Spinner
 							v-if="isProcessing"
 							class="h-4 w-4 text-white" />
-						<span>Register</span>
+						<span>Sign up</span>
 					</button>
 				</form>
 			</div>
@@ -409,10 +410,10 @@
 		@apply text-2xl font-semibold;
 	}
 	.form-header {
-		@apply max-w-md px-6 md:px-2 w-full;
+		@apply max-w-md px-6 md:px-0 w-full;
 	}
 	.registration-form {
-		@apply max-w-md px-6 md:px-0 py-8 mt-6 w-full;
+		@apply max-w-md pb-6 md:pb-0 px-6 md:px-0 mt-8 md:mt-10 w-full;
 	}
 	.form-label {
 		@apply block text-sm font-medium mb-2;
