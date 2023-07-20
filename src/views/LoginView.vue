@@ -4,9 +4,10 @@
 	import { toTitleCase } from "@/helpers/string"
 	import axios from "axios"
 	import * as yup from "yup"
+	import config from "@/config.json"
 	import FormInput from "@components/FormInput.vue"
 	import Dialog from "@components/Dialog.vue"
-	import config from "@/config.json"
+	import Spinner from "@components/Spinner.vue"
 
 	const { handleSubmit, values, errors, defineInputBinds } = useForm({
 		initialValues: {
@@ -34,18 +35,6 @@
 	const email = defineInputBinds("email")
 	const password = defineInputBinds("password")
 
-	const onSubmit = handleSubmit((values) => {
-		isOpen.value = true
-
-		completedData.firstName = values.firstName
-		completedData.lastName = values.lastName
-		completedData.email = values.email
-		completedData.password = values.password.replaceAll(/./g, "*")
-		completedData.country = selectedCountry.value?.isoCountry
-		completedData.profession = selectedProfession.value?.professionName
-		completedData.specialty = selectedSpecialty.value?.specialtyName
-	})
-
 	let completedData = {}
 
 	const settings = ref(config)
@@ -59,6 +48,8 @@
 	let selectedSpecialty = ref(null)
 
 	let isOpen = ref(false)
+	let isFetchingSpecialties = ref(false)
+	let isProcessing = ref(false)
 
 	onMounted(() => {
 		if (config.country) {
@@ -72,10 +63,34 @@
 				professions.value = response.data
 			})
 		}
+
+		if (!config.profession && config.specialty) {
+			axios.get(`http://localhost:3000/api/specialties`).then((response) => {
+				specialties.value = response.data
+			})
+		}
+	})
+
+	let onSubmit = handleSubmit((values) => {
+		isProcessing.value = true
+
+		completedData.firstName = values.firstName
+		completedData.lastName = values.lastName
+		completedData.email = values.email
+		completedData.password = values.password.replaceAll(/./g, "*")
+		completedData.country = selectedCountry.value?.isoCountry
+		completedData.profession = selectedProfession.value?.professionName
+		completedData.specialty = selectedSpecialty.value?.specialtyName
+
+		setTimeout(() => {
+			isOpen.value = true
+			isProcessing.value = false
+		}, 3000)
 	})
 
 	function handleChange() {
 		selectedSpecialty.value = null
+		isFetchingSpecialties.value = true
 
 		if (!config.specialty) {
 			return
@@ -87,6 +102,7 @@
 			)
 			.then((response) => {
 				specialties.value = response.data
+				isFetchingSpecialties.value = false
 			})
 	}
 
@@ -172,15 +188,18 @@
 				class="[ col-span-2 ]">
 				<label
 					for="country"
-					class="[ form-label ]"
-					>Country</label
-				>
+					class="[ form-label ]">
+					Country
+				</label>
 
 				<select
 					v-model="selectedCountry"
 					name="country"
 					id="country"
+					:class="{ 'text-slate-400': selectedCountry === null }"
 					class="[ form-select ]">
+					<option :value="null">Select country</option>
+
 					<option
 						v-for="country in countries"
 						:value="country">
@@ -194,16 +213,19 @@
 				class="[ col-span-2 ]">
 				<label
 					for="profession"
-					class="[ form-label ]"
-					>Profession</label
-				>
+					class="[ form-label ]">
+					Profession
+				</label>
 
 				<select
 					v-model="selectedProfession"
 					name="profession"
 					id="profession"
 					@change="handleChange"
+					:class="{ 'text-slate-400': selectedProfession === null }"
 					class="[ form-select ]">
+					<option :value="null">Select profession</option>
+
 					<option
 						v-for="profession in professions"
 						:value="profession">
@@ -221,25 +243,38 @@
 					Specialty
 				</label>
 
-				<select
-					v-model="selectedSpecialty"
-					name="specialty"
-					id="specialty"
-					:disabled="specialties.length === 0"
-					:class="{ 'form-select--disabled': specialties.length === 0 }"
-					class="[ form-select ]">
-					<option
-						v-for="specialty in specialties"
-						:value="specialty">
-						{{ specialty.specialtyName }}
-					</option>
-				</select>
+				<div class="[ relative ]">
+					<div
+						v-if="isFetchingSpecialties"
+						class="[ absolute left-2 top-1/2 -translate-y-1/2 z-10 ]">
+						<Spinner class="h-4 w-4 text-orange-700" />
+					</div>
+					<select
+						v-model="selectedSpecialty"
+						name="specialty"
+						id="specialty"
+						:disabled="specialties.length === 0"
+						:class="{
+							'form-select--disabled': specialties.length === 0,
+							'text-slate-400': selectedSpecialty === null,
+						}"
+						class="[ form-select ]">
+						<option :value="null">Select specialty</option>
+
+						<option
+							v-for="specialty in specialties"
+							:value="specialty">
+							{{ specialty.specialtyName }}
+						</option>
+					</select>
+				</div>
 			</div>
 
 			<button
 				type="submit"
-				class="[ bg-accent text-white sm:text-sm ] [ mt-4 px-3 py-2 rounded ] [ col-span-2 ]">
-				Register
+				class="submit-button [ col-span-2 ] [ flex justify-center items-center gap-2 ]">
+				<Spinner v-if="isProcessing" class="h-4 w-4 text-white" />
+				<span>Register</span>
 			</button>
 		</form>
 	</main>
@@ -262,4 +297,7 @@
 	.form-select--disabled {
 		@apply bg-slate-200 cursor-not-allowed;
 	}
+  .submit-button {
+    @apply bg-accent text-white sm:text-sm mt-4 px-3 py-2 rounded
+  }
 </style>
