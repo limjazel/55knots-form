@@ -161,9 +161,17 @@
 			@close="closeDialog" />
 
 		<div class="[ grid gap-4 ] [ absolute right-4 bottom-4 ]">
-			<ErrorToast v-if="apiErrors.countries" @retry="fetchCountries"> countries error </ErrorToast>
+			<ErrorToast
+				v-if="apiErrors.countries"
+				@retry="fetchCountries">
+				countries error
+			</ErrorToast>
 
-			<ErrorToast v-if="apiErrors.professions" @retry="fetchProfessions"> professions error </ErrorToast>
+			<ErrorToast
+				v-if="apiErrors.professions"
+				@retry="fetchProfessions">
+				professions error
+			</ErrorToast>
 
 			<ErrorToast @retry="fetchSpecialties"> specialties error </ErrorToast>
 		</div>
@@ -319,6 +327,15 @@
 
 			<button
 				type="submit"
+				:disabled="
+					apiErrors.countries || apiErrors.professions || apiErrors.specialties
+				"
+				:class="{
+					'opacity-70':
+						apiErrors.countries ||
+						apiErrors.professions ||
+						apiErrors.specialties,
+				}"
 				class="submit-button [ col-span-2 ] [ flex justify-center items-center gap-2 ]">
 				<Spinner
 					v-if="isProcessing"
