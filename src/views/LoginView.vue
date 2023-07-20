@@ -31,7 +31,7 @@
 
 	const onSubmit = handleSubmit((values) => {
 		// alert(JSON.stringify(values, null, 2))
-		alert(selectedSpecialty.value.specialtyName)
+		isOpen.value = true
 	})
 
 	const settings = ref(config)
@@ -63,11 +63,59 @@
 				specialties.value = response.data
 			})
 	}
+
+	let isOpen = ref(false)
 </script>
 
 <template>
 	<main>
-		{{ config }}
+		<div
+			class="bg-red-100 flex flex-col"
+			v-if="isOpen">
+			<button
+				type="button"
+				@click.prevent="() => (isOpen = false)"
+				class="bg-red-600">
+				close dialog
+			</button>
+
+			<dl>
+				<div>
+					<dt>First name</dt>
+					<dd>{{ values.firstName }}</dd>
+				</div>
+
+				<div>
+					<dt>Last name</dt>
+					<dd>{{ values.lastName }}</dd>
+				</div>
+
+				<div>
+					<dt>Email</dt>
+					<dd>{{ values.email }}</dd>
+				</div>
+
+				<div>
+					<dt>Password</dt>
+					<dd>{{ values.password }}</dd>
+				</div>
+
+				<div v-if="selectedCountry !== null">
+					<dt>Country</dt>
+					<dd>{{ selectedCountry.isoCountry }}</dd>
+				</div>
+
+				<div v-if="selectedProfession !== null">
+					<dt>Profession</dt>
+					<dd>{{ selectedProfession.professionName }}</dd>
+				</div>
+
+				<div v-if="selectedSpecialty !== null">
+					<dt>Specialty</dt>
+					<dd>{{ selectedSpecialty.specialtyName }}</dd>
+				</div>
+			</dl>
+		</div>
 
 		<form
 			@submit.prevent="onSubmit"
