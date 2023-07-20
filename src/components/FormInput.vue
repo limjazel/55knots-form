@@ -1,13 +1,12 @@
 <script setup>
 import FormInputErrorMessage from "./FormInputErrorMessage.vue"
 
-const $emit = defineEmits(["update:modelValue", "blur"])
-
 const props = defineProps({
   modelValue: String,
   error: String,
 })
 
+defineEmits(["update:modelValue", "blur"])
 defineOptions({
   inheritAttrs: false
 })

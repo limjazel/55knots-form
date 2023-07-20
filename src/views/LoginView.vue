@@ -3,8 +3,9 @@
 	import { useForm } from "vee-validate"
 	import axios from "axios"
 	import * as yup from "yup"
-	import FormInput from "../components/FormInput.vue"
-	import config from "../config.json"
+	import FormInput from "@components/FormInput.vue"
+	import Dialog from "@components/Dialog.vue"
+	import config from "@/config.json"
 
 	const { handleSubmit, values, errors, defineInputBinds } = useForm({
 		initialValues: {
@@ -31,7 +32,18 @@
 
 	const onSubmit = handleSubmit((values) => {
 		isOpen.value = true
+
+		console.log(isOpen.value)
+		completedData.firstName = values.firstName
+		completedData.lastName = values.lastName
+		completedData.email = values.email
+		completedData.password = values.password.replaceAll(/./g, "*")
+		completedData.country = selectedCountry.value?.isoCountry
+		completedData.profession = selectedProfession.value?.professionName
+		completedData.specialty = selectedSpecialty.value?.specialtyName
 	})
+
+	let completedData = {}
 
 	const settings = ref(config)
 
@@ -42,6 +54,8 @@
 	let selectedCountry = ref(null)
 	let selectedProfession = ref(null)
 	let selectedSpecialty = ref(null)
+
+	let isOpen = ref(false)
 
 	onMounted(() => {
 		if (config.country) {
@@ -73,59 +87,19 @@
 			})
 	}
 
-	let isOpen = ref(false)
+	function closeDialog() {
+		isOpen.value = false
+	}
 </script>
 
 <template>
 	<main>
 		<h1>Account Registration</h1>
-		<div
-			class="bg-red-100 flex flex-col"
-			v-if="isOpen">
-			<button
-				type="button"
-				@click.prevent="() => (isOpen = false)"
-				class="bg-red-600">
-				close dialog
-			</button>
 
-			<dl>
-				<div>
-					<dt>First name</dt>
-					<dd>{{ values.firstName }}</dd>
-				</div>
-
-				<div>
-					<dt>Last name</dt>
-					<dd>{{ values.lastName }}</dd>
-				</div>
-
-				<div>
-					<dt>Email</dt>
-					<dd>{{ values.email }}</dd>
-				</div>
-
-				<div>
-					<dt>Password</dt>
-					<dd>{{ values.password.replaceAll(/./g, "*") }}</dd>
-				</div>
-
-				<div v-if="selectedCountry !== null">
-					<dt>Country</dt>
-					<dd>{{ selectedCountry.isoCountry }}</dd>
-				</div>
-
-				<div v-if="selectedProfession !== null">
-					<dt>Profession</dt>
-					<dd>{{ selectedProfession.professionName }}</dd>
-				</div>
-
-				<div v-if="selectedSpecialty !== null">
-					<dt>Specialty</dt>
-					<dd>{{ selectedSpecialty.specialtyName }}</dd>
-				</div>
-			</dl>
-		</div>
+		<Dialog
+			:completedData="completedData"
+			:isOpen="isOpen"
+			@close="closeDialog" />
 
 		<form
 			@submit.prevent="onSubmit"
