@@ -24,7 +24,7 @@ const onSubmit = handleSubmit((values) => {
 
 <template>
   <main>
-    <form @submit.prevent="onSubmit">
+    <form @submit.prevent="onSubmit" class="grid grid-cols-2 max-w-md bg-yellow-200 ">
       <div>
         <label for="first-name">First name</label>
         <FormInput
@@ -71,7 +71,6 @@ const onSubmit = handleSubmit((values) => {
           id="password"
           type="password"
           placeholder="*********"
-          error
         />
 
         <span>{{ errors.password }}</span>
