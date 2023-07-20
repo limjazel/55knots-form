@@ -30,3 +30,11 @@ app.get("/api/professions", async (_req, res) => {
   })
   return res.json(professions)
 })
+
+app.get("/api/professions/:profession/specialties", async (req, res) => {
+  let specialties = await axios.get(`https://test-services.interact.technology/rest/refdata/specialties?professionId=${req.params.profession}`)
+  .then((response) => {
+    return response.data
+  })
+  return res.json(specialties)
+})

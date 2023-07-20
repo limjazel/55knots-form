@@ -32,9 +32,11 @@
 
 	const countries = ref([])
 	const professions = ref([])
+	const specialties = ref([])
 
 	let selectedCountry = ref("country")
 	let selectedProfession = ref("profession")
+	let selectedSpecialty = ref("specialty")
 
 	axios.get("http://localhost:3000/api/countries").then((response) => {
 		countries.value = response.data
@@ -43,6 +45,17 @@
 	axios.get("http://localhost:3000/api/professions").then((response) => {
 		professions.value = response.data
 	})
+
+	function handleChange(event) {
+		console.error(event.target.value)
+		console.error(selectedProfession.value.professionId)
+
+		axios
+			.get(`http://localhost:3000/api/professions/${selectedProfession.value.professionId}/specialties`)
+			.then((response) => {
+				specialties = response.data
+			})
+	}
 </script>
 
 <template>
@@ -120,6 +133,7 @@
 					v-model="selectedProfession"
 					name="profession"
 					id="profession"
+					@change="handleChange"
 					class="[ w-full px-4 py-2 ]">
 					<option
 						v-for="profession in professions"
