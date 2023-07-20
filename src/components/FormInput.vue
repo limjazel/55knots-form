@@ -19,10 +19,10 @@ defineOptions({
       @input="$emit('update:modelValue', $event.target.value)"
       @blur="$emit('blur')"
       :class="{ ['input-error']: error !== undefined }"
-      class="c-form-input"
+      class="c-form-input [ form-input ]"
     />
 
-    <FormInputErrorMessage>
+    <FormInputErrorMessage class="mt-2">
       {{ error }}
     </FormInputErrorMessage>
   </div>
@@ -30,7 +30,7 @@ defineOptions({
 
 <style lang="postcss">
 .c-form-input {
-  @apply flex border rounded px-3 py-2;
+  @apply flex border border-slate-300 rounded px-2.5 py-1.5 sm:text-sm;
 }
 
 .input-error {
