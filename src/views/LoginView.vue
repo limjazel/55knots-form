@@ -5,10 +5,10 @@ import * as yup from "yup"
 
 const { handleSubmit, values, errors, defineInputBinds } = useForm({
   validationSchema: yup.object({
-    firstName: yup.string().required("Your first name is required"),
-    lastName: yup.string().required("Your last name is required"),
-    email: yup.string().email().required(),
-    password: yup.string().min(8).required("A password is required"),
+    firstName: yup.string().required("Your first name is required."),
+    lastName: yup.string().required("Your last name is required."),
+    email: yup.string().email("The email address you provided is not valid.").required("An email address is required."),
+    password: yup.string().min(8).required("A password is required."),
   }),
 })
 
@@ -24,7 +24,7 @@ const onSubmit = handleSubmit((values) => {
 
 <template>
   <main>
-    <form @submit.prevent="onSubmit" class="grid grid-cols-2 max-w-md bg-yellow-200 ">
+    <form @submit.prevent="onSubmit" class="grid grid-cols-2 max-w-md bg-yellow-100">
       <div>
         <label for="first-name">First name</label>
         <FormInput
@@ -35,8 +35,6 @@ const onSubmit = handleSubmit((values) => {
           autocomplete="off"
           :error="errors.firstName"
         />
-
-        <span>{{ errors.firstName }}</span>
       </div>
 
       <div>
@@ -49,8 +47,6 @@ const onSubmit = handleSubmit((values) => {
           autocomplete="off"
           :error="errors.lastName"
         />
-
-        <span>{{ errors.lastName }}</span>
       </div>
 
       <div>
@@ -63,8 +59,6 @@ const onSubmit = handleSubmit((values) => {
           autocomplete="off"
           :error="errors.email"
         />
-
-        <span>{{ errors.email }}</span>
       </div>
 
       <div>
@@ -76,15 +70,14 @@ const onSubmit = handleSubmit((values) => {
           placeholder="*********"
           :error="errors.password"
         />
-
-        <span>{{ errors.password }}</span>
       </div>
 
       <pre>values: {{ values }}</pre>
 
-      <button type="submit" class="[ bg-red-100 ]">Login</button>
+      <button type="submit" class="block bg-slate-500 py-2 px-4 border">Login</button>
     </form>
   </main>
 </template>
 
-<style scoped></style>
+<style lang="postcss">
+</style>
