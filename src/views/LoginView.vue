@@ -8,6 +8,7 @@
 	import FormInput from "@components/FormInput.vue"
 	import Dialog from "@components/Dialog.vue"
 	import Spinner from "@components/Spinner.vue"
+	import ErrorToast from "@components/ErrorToast.vue"
 
 	const { handleSubmit, values, errors, defineInputBinds } = useForm({
 		initialValues: {
@@ -50,24 +51,23 @@
 	let isOpen = ref(false)
 	let isFetchingSpecialties = ref(false)
 	let isProcessing = ref(false)
+	let apiErrors = ref({
+		countries: false,
+		professions: false,
+		specialties: false,
+	})
 
 	onMounted(() => {
 		if (config.country) {
-			axios.get("http://localhost:3000/api/countries").then((response) => {
-				countries.value = response.data
-			})
+			fetchCountries()
 		}
 
 		if (config.profession) {
-			axios.get("http://localhost:3000/api/professions").then((response) => {
-				professions.value = response.data
-			})
+			fetchProfessions()
 		}
 
 		if (!config.profession && config.specialty) {
-			axios.get(`http://localhost:3000/api/specialties`).then((response) => {
-				specialties.value = response.data
-			})
+			fetchSpecialties()
 		}
 	})
 
@@ -87,6 +87,45 @@
 			isProcessing.value = false
 		}, 3000)
 	})
+
+	function fetchCountries() {
+		apiErrors.value.countries = false
+
+		axios
+			.get("http://localhost:3000/api/countries")
+			.then((response) => {
+				countries.value = response.data
+			})
+			.catch(() => {
+				apiErrors.value.countries = true
+			})
+	}
+
+	function fetchProfessions() {
+		apiErrors.value.professions = false
+
+		axios
+			.get("http://localhost:3000/api/professions")
+			.then((response) => {
+				professions.value = response.data
+			})
+			.catch(() => {
+				apiErrors.value.professions = true
+			})
+	}
+
+	function fetchSpecialties() {
+		apiErrors.value.specialties = false
+
+		axios
+			.get(`http://localhost:3000/api/specialties`)
+			.then((response) => {
+				specialties.value = response.data
+			})
+			.catch(() => {
+				apiErrors.value.specialties = true
+			})
+	}
 
 	function handleChange() {
 		selectedSpecialty.value = null
@@ -120,6 +159,14 @@
 			:completedData="completedData"
 			:isOpen="isOpen"
 			@close="closeDialog" />
+
+		<div class="[ grid gap-4 ] [ absolute right-4 bottom-4 ]">
+			<ErrorToast v-if="apiErrors.countries" @retry="fetchCountries"> countries error </ErrorToast>
+
+			<ErrorToast v-if="apiErrors.professions" @retry="fetchProfessions"> professions error </ErrorToast>
+
+			<ErrorToast @retry="fetchSpecialties"> specialties error </ErrorToast>
+		</div>
 
 		<form
 			@submit.prevent="onSubmit"
@@ -273,7 +320,9 @@
 			<button
 				type="submit"
 				class="submit-button [ col-span-2 ] [ flex justify-center items-center gap-2 ]">
-				<Spinner v-if="isProcessing" class="h-4 w-4 text-white" />
+				<Spinner
+					v-if="isProcessing"
+					class="h-4 w-4 text-white" />
 				<span>Register</span>
 			</button>
 		</form>
@@ -297,7 +346,7 @@
 	.form-select--disabled {
 		@apply bg-slate-200 cursor-not-allowed;
 	}
-  .submit-button {
-    @apply bg-accent text-white sm:text-sm mt-4 px-3 py-2 rounded
-  }
+	.submit-button {
+		@apply bg-accent text-white sm:text-sm mt-4 px-3 py-2 rounded;
+	}
 </style>

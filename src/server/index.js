@@ -26,6 +26,8 @@ app.get("/api/countries", async (_req, res) => {
     return response.data
   })
   return res.json(countries)
+  // res.status(400);
+  // res.send('None shall pass');
 })
 
 app.get("/api/professions", async (_req, res) => {
@@ -34,6 +36,8 @@ app.get("/api/professions", async (_req, res) => {
     return response.data
   })
   return res.json(professions)
+  // res.status(400);
+  // res.send('None shall pass');
 })
 
 app.get("/api/specialties", async (req, res) => {
@@ -48,4 +52,6 @@ app.get("/api/specialties", async (req, res) => {
     return response.data
   })
   return res.json(specialties)
+  // res.status(400);
+  // res.send('None shall pass');
 })
